@@ -226,6 +226,30 @@ message ServiceRoleBinding {
   // $hide_from_docs
   // Indicates enforcement mode of the ServiceRoleBinding.
   EnforcementMode mode = 3;
+
+  // $hide_from_docs
+  // Support inline role definition, essentially replace “roleRef” section in binding
+  // with the role definition itself.
+  // For example, the following “product-frontend” AuthorizationPolicy allows “frontend”
+  // service to view “product” service on “/info/*” path.
+  // ```yaml
+  // apiVersion: “rbac.istio.io/v1alpha1”
+  // kind: AuthorizationPolicy
+  // metadata:
+  //  name: product-frontend
+  //  namespace: ns1
+  // spec:
+  //  selector:
+  //    labels:
+  //      app: product
+  //  allow:
+  //  - subjects:
+  //    - names: ["cluster.local/ns/default/sa/frontend"]
+  //    actions:
+  //    - paths: [“/info/*”]
+  //      methods: [“GET”]
+  // Required. The set of access rules (permissions) that the role has.
+  repeated AccessRule actions = 4;
 }
 
 // Subject defines an identity. The identity is either a user or identified by a set of `properties`.
